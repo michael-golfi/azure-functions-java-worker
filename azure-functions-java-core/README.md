@@ -9,7 +9,7 @@ Use this package by including the following snippet in your `pom.xml`.
 <dependency>
     <groupId>com.microsoft.azure.serverless</groupId>
     <artifactId>azure-function-java-core</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-beta-1</version>
 </dependency>
 ```
 
@@ -21,14 +21,8 @@ The following table lists the Java annotations for each binding type.
 
 Binding | Annotation
 ---|---
-CosmosDB | N/A
-Event Hubs | <ul><li>`EventHubTrigger`</li><li>`EventHubOutput`</li></ul> 
 HTTP | <ul><li>`HttpTrigger`</li><li>`HttpOutput`</li></ul>
-Mobile Apps | N/A
-Notification Hubs | N/A
-Service Bus | <ul><li>`ServiceBusQueueTrigger`</li><li>`ServiceBusQueueOutput`</li><li>`ServiceBusTopicTrigger`</li><li>`ServiceBusTopicOutput`</li></ul>
-Storage Blob | <ul><li>`BlobTrigger`</li><li>`BlobOutput`</li><li>`StorageAccount`</li></ul>
-Storage Queue | <ul><li>`QueueTrigger`</li><li>`QueueOutput`</li><li>`StorageAccount`</li></ul>
-Storage Table | <ul><li>`TableInput`</li><li>`TableOutput`</li><li>`StorageAccount`</li></ul>
+Storage Blob | <ul><li>`BlobTrigger`</li><li>`BlobInput`</li><li>`BlobOutput`</li></ul>
+Storage Queue | <ul><li>`QueueTrigger`</li><li>`QueueOutput`</li></ul>
+Storage Table | <ul><li>`TableInput`</li><li>`TableOutput`</li></ul>
 Timer | <ul><li>`TimerTrigger`</li></ul>
-Twilio | N/A
