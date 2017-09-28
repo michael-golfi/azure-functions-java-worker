@@ -37,7 +37,7 @@ and the corresponding `function.json` would be:
       "name": "req",
       "direction": "in",
       "authLevel": "anonymous",
-      "methods": [ "get" ]
+      "methods": [ "post" ]
     },
     {
       "type": "http",
@@ -65,19 +65,19 @@ You are also allowed to overload methods with the same name but with different t
 
 ## Inputs
 
-Input are divided into two categories in Azure Functions: one is the trigger input and the other is the additional input. Although they are different in `function.json`, the usage are identical in Java code. Let's take the following code snippet as an example:
+Inputs are divided into two categories in Azure Functions: one is the trigger input and the other is the additional input. Although they are different in `function.json`, the usages are identical in Java code. Let's take the following code snippet as an example:
 
 ```Java
 package com.example;
 
-import com.microsoft.azure.serverless.functions.annotation.Bind;
+import com.microsoft.azure.serverless.functions.annotation.BindingName;
 
 public class MyClass {
-    public static String echo(String in, @Bind("item") MyObject obj) {
+    public static String echo(String in, @BindingName("item") MyObject obj) {
         return "Hello, " + in + " and " + obj.getKey() + ".";
     }
 
-    private static class MyObject {
+    public static class MyObject {
         public String getKey() { return this.RowKey; }
         private String RowKey;
     }
@@ -125,16 +125,16 @@ Outputs can be expressed both in return value or output parameters. If there is 
 
 Return value is the simplest form of output, you just return the value of any type, and Azure Functions runtime will try to marshal it back to the actual type (such as an HTTP response). In `functions.json`, you use `$return` as the name of the output binding.
 
-To produce multiple output values, use `OutputParameter<T>` type defined in the `azure-functions-java-core` package. If you need to make an HTTP response and push a message to a queue as well, you can write something like:
+To produce multiple output values, use `OutputBinding<T>` type defined in the `azure-functions-java-core` package. If you need to make an HTTP response and push a message to a queue as well, you can write something like:
 
 ```Java
 package com.example;
 
-import com.microsoft.azure.serverless.functions.OutputParameter;
-import com.microsoft.azure.serverless.functions.annotation.Bind;
+import com.microsoft.azure.serverless.functions.OutputBinding;
+import com.microsoft.azure.serverless.functions.annotation.BindingName;
 
 public class MyClass {
-    public static String echo(String body, @Bind("message") OutputParameter<String> queue) {
+    public static String echo(String body, @BindingName("message") OutputBinding<String> queue) {
         String result = "Hello, " + body + ".";
         queue.setValue(result);
         return result;
@@ -201,4 +201,4 @@ Sometimes a function need to take a more detailed control of the input and outpu
 | `HttpRequestMessage`  |    HTTP Trigger     | Get method, headers or queries |
 | `HttpResponseMessage` | HTTP Output Binding | Return status other than 200   |
 
-> [NOTE] You can also use `@Bind` annotation to get HTTP headers and queries. For example, `@Bind("name") String query` will try to iterate the HTTP request headers and queries and pass that value to the method; `query` will be `"test"` if the request URL is `http://example.org/api/echo?name=test`.
+> [NOTE] You can also use `@BindingName` annotation to get HTTP headers and queries. For example, `@BindingName("name") String query` will try to iterate the HTTP request headers and queries and pass that value to the method; `query` will be `"test"` if the request URL is `http://example.org/api/echo?name=test`.
