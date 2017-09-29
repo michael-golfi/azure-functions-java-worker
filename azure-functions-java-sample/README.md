@@ -174,11 +174,20 @@ and define the output binding in `function.json`:
 
 ## Binary Data
 
-Binary data is represented as `byte[]` in your Azure functions code. Let's say you have a binary file in blob, you need to define it in `function.json` (the trick here is `dataType` is defined as `binary`, and `dataType` is available for all kinds of bindings/triggers):
+Binary data is represented as `byte[]` in your Azure functions code. Let's say you have a binary file in blob, you need to reference it  as a `blob` input binding in `function.json` (the trick here is `dataType` is defined as `binary`, and `dataType` is available for all kinds of bindings/triggers):
 
 ```json
 {
-    ... Other bindings are omitted here
+  "scriptFile": "azure-functions-example.jar",
+  "entryPoint": "com.example.MyClass.echo",
+  "bindings": [
+    {
+      "type": "httpTrigger",
+      "name": "req",
+      "direction": "in",
+      "authLevel": "anonymous",
+      "methods": [ "get" ]
+    },
     {
       "type": "blob",
       "name": "content",
@@ -187,14 +196,19 @@ Binary data is represented as `byte[]` in your Azure functions code. Let's say y
       "path": "container/myfile.bin",
       "connection": "ExampleStorageAccount"
     },
-    ... Other bindings are omitted here
+    {
+      "type": "http",
+      "name": "$return",
+      "direction": "out"
+    }
+  ]
+}
 ```
 
 And use it in your function code simply as (or if you have too many parameters, you can also use `@BindingName("content") byte[] content` to reference it):
 
 ```java
-// ... Class definition and imports are omitted here
-
+// Class definition and imports are omitted here
 public static String echoLength(byte[] content) {
 }
 ```
