@@ -84,7 +84,7 @@ public class MyClass {
 }
 ```
 
-Here we use two inputs for a function. The `@Bind` annotation accepts a `String` property which represents the name of the binding/trigger defined in `function.json`:
+Here we use two inputs for a function. The `@BindingName` annotation accepts a `String` property which represents the name of the binding/trigger defined in `function.json`:
 
 ```json
 {
@@ -171,6 +171,35 @@ and define the output binding in `function.json`:
   ]
 }
 ```
+
+## Binary Data
+
+Binary data is represented as `byte[]` in your Azure functions code. Let's say you have a binary file in blob, you need to define it in `function.json` (the trick here is `dataType` is defined as `binary`, and `dataType` is available for all kinds of bindings/triggers):
+
+```json
+{
+    ... Other bindings are omitted here
+    {
+      "type": "blob",
+      "name": "content",
+      "direction": "in",
+      "dataType": "binary",
+      "path": "container/myfile.bin",
+      "connection": "ExampleStorageAccount"
+    },
+    ... Other bindings are omitted here
+```
+
+And use it in your function code simply as (or if you have too many parameters, you can also use `@BindingName("content") byte[] content` to reference it):
+
+```java
+// ... Class definition and imports are omitted here
+
+public static String echoLength(byte[] content) {
+}
+```
+
+Similarly as the outputs, you need to use `OutputBinding<byte[]>` type to make a binary output binding.
 
 ## Context
 
